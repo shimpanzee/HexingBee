@@ -1,0 +1,24 @@
+PODS:
+  - Factory (1.2.9)
+  - MockingbirdFramework (0.20.0)
+  - TinyConstraints (4.0.2)
+
+DEPENDENCIES:
+  - Factory
+  - MockingbirdFramework
+  - TinyConstraints
+
+SPEC REPOS:
+  trunk:
+    - Factory
+    - MockingbirdFramework
+    - TinyConstraints
+
+SPEC CHECKSUMS:
+  Factory: 883df5a392a7f4110597c42652b8db9c07618a09
+  MockingbirdFramework: 54e35fbbb47b806c1a1fae2cf3ef99f6eceb55e5
+  TinyConstraints: 7b7ccc0c485bb3bb47082138ff28bc33cd49897f
+
+PODFILE CHECKSUM: 57de807efb8d3240453df615bf186bbad458ee85
+
+COCOAPODS: 1.11.3
