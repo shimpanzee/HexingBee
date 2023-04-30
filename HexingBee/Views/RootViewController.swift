@@ -226,10 +226,11 @@ extension RootViewController {
         inputSectionView.addArrangedSubview(wordInputView)
         wordInputView.placeholder = "Enter word"
         wordInputView.borderStyle = .roundedRect
-        wordInputView.autocapitalizationType = .none
+        wordInputView.autocapitalizationType = .allCharacters
         wordInputView.autocorrectionType = .no
         wordInputView.becomeFirstResponder()
         wordInputView.accessibilityIdentifier = "wordInputView"
+        wordInputView.textAlignment = .center
         wordInputView.delegate = self
         wordInputView.centerX(to:puzzleView)
 
@@ -267,7 +268,7 @@ extension RootViewController: ActionViewDelegate {
 
 extension RootViewController: HexDelegate {
     func cellClicked(letter: String) {
-        wordInputView.text = (wordInputView.text ?? "") + letter.lowercased()
+        wordInputView.text = (wordInputView.text ?? "") + letter
     }
 }
 
@@ -276,4 +277,35 @@ extension RootViewController: UITextFieldDelegate {
         submitWord()
         return true
     }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        let nsString = (textField.text ?? "") as NSString
+
+        // construct the final but unattributed string
+        var updatedString = nsString.replacingCharacters(in: range, with: string)
+
+        // Filter any symbol/numeric characters
+        updatedString.removeAll { !$0.isLetter }
+        let attributedString = NSMutableAttributedString(string: updatedString)
+
+        // This code uses an Int index, so assumes ascii characters only
+        for (idx, c) in attributedString.string.enumerated() {
+            // change font color for the center letter and for invalid letters.
+            // we don't care about performance here, so for simplicity, set the
+            // attributes per character (instead of on a range).
+            if !viewModel.isValid(letter: c) {
+                attributedString.addAttribute(.foregroundColor, value: UIColor.Bee.invalidLetter, range: NSMakeRange(idx, 1))
+            } else if viewModel.isCenter(letter: c) {
+                attributedString.addAttribute(.foregroundColor, value: UIColor.Bee.innerHex, range: NSMakeRange(idx, 1))
+            }
+        }
+        textField.attributedText = attributedString
+
+        // we took over the job of updating the string, so shortcircuit
+        // the default handling
+        return false
+    }
+
+
 }

@@ -19,9 +19,6 @@ class HexingBeeViewModel {
     @PublishedOnMain
     private(set) var bee: Bee? = nil
 
-    @PublishedOnMain
-    private(set) var validLetters = Set<Character>()
-
     // Publish a congratulatory message every time a valid word is provided
     let congrats = PassthroughSubject<(message: String, delta: Int), Never>()
 
@@ -34,13 +31,15 @@ class HexingBeeViewModel {
     @PublishedOnMain
     private(set) var rank: Rank = .beginner
 
+    private var validLetters = Set<Character>()
+
     private var ranks: [Int] = []
 
     init() {
         Task {
             bee = try await HexingBeeAPI.fetchBee()
             if let bee = bee {
-                validLetters = Set<Character>(bee.validLetters.map { $0.first! })
+                validLetters = Set<Character>(bee.validLetters.map { $0.uppercased().first! })
 
                 let maxScore = bee.answers.reduce(0, { score, word in
                     score + self.calculateScore(for: word)
@@ -62,7 +61,15 @@ class HexingBeeViewModel {
         foundWords.removeAll()
     }
 
-    func validateWord(_ word: String) -> Bool {
+    func isCenter(letter: Character) -> Bool {
+        return bee?.centerLetter.uppercased().first == letter
+    }
+
+    func isValid(letter: Character) -> Bool {
+        return validLetters.contains(letter.uppercased().first!)
+    }
+
+    func isValid(word: String) -> Bool {
         guard let bee = bee else {
             return false
         }
@@ -80,11 +87,11 @@ class HexingBeeViewModel {
             errorMessage = "invalid letters: \(invalids)"
             return false
         }
-        if word.firstIndex(of: bee.centerLetter.first!) == nil {
+        if word.firstIndex(of: bee.centerLetter.uppercased().first!) == nil {
             errorMessage = "missing center letter"
             return false
         }
-        if bee.answers.firstIndex(of: word) == nil {
+        if bee.answers.firstIndex(of: word.lowercased()) == nil {
             errorMessage = "invalid word"
             return false
         }
@@ -120,7 +127,7 @@ class HexingBeeViewModel {
             return
         }
 
-        if validateWord(word) {
+        if isValid(word: word) {
             foundWords.insert(word)
 
             let delta = calculateScore(for: word)

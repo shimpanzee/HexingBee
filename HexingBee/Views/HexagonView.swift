@@ -86,10 +86,8 @@ extension HexagonView {
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = hexagon.cgPath;
-        shapeLayer.strokeColor = UIColor.red.cgColor
-        shapeLayer.lineWidth = 0
 
-        shapeLayer.fillColor = isCenter ? UIColor.beeYellow.cgColor : UIColor.beeGray.cgColor
+        shapeLayer.fillColor = isCenter ? UIColor.Bee.innerHex.cgColor : UIColor.Bee.outerHex.cgColor
         shapeLayer.zPosition = -1
 
         layer.addSublayer(shapeLayer)

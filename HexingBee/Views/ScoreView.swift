@@ -31,7 +31,7 @@ class ScoreView: UIView {
         heightAnchor.constraint(equalToConstant: frame.height).isActive = true
         widthAnchor.constraint(equalToConstant: frame.width).isActive = true
 
-        buildLine(start: padding, end: padding+segLength*CGFloat(segCount), color: UIColor.beeGray.cgColor)
+        buildLine(start: padding, end: padding+segLength*CGFloat(segCount), color: UIColor.Bee.ladder.cgColor)
 
         buildCircles()
 
@@ -71,7 +71,7 @@ class ScoreView: UIView {
 
     func configureCircleColors() {
         for i in 0...segCount {
-            let color = i > rank.rawValue ? UIColor.beeGray.cgColor : UIColor.beeYellow.cgColor
+            let color = i > rank.rawValue ? UIColor.Bee.ladder.cgColor : UIColor.Bee.ladderHighlight.cgColor
             circles[i].fillColor = color
             circles[i].strokeColor = color
         }
@@ -147,7 +147,7 @@ class ScoreView: UIView {
         circlePath.addArc(withCenter: CGPoint(x: x, y: y), radius: radius, startAngle: 0, endAngle: CGFloat.pi * 2.0, clockwise: true)
         let circleLayer = CAShapeLayer()
 
-        let color = isRankCircle ? UIColor.beeYellow.cgColor : UIColor.beeGray.cgColor
+        let color = isRankCircle ? UIColor.Bee.ladderHighlight.cgColor : UIColor.Bee.ladder.cgColor
 
         circleLayer.strokeColor = color
         circleLayer.fillColor = color
