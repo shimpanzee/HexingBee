@@ -284,6 +284,7 @@ extension RootViewController: UITextFieldDelegate {
 
         // construct the final but unattributed string
         var updatedString = nsString.replacingCharacters(in: range, with: string)
+        updatedString = updatedString.uppercased()
 
         // Filter any symbol/numeric characters
         updatedString.removeAll { !$0.isLetter }

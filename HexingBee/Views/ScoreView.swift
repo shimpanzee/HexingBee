@@ -117,7 +117,6 @@ class ScoreView: UIView {
         CATransaction.commit()
     }
 
-
     private func configureLabel() {
         label.text = "\(score)"
     }
